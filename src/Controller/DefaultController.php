@@ -18,6 +18,7 @@ class DefaultController extends AbstractController
      */
     public function index()
     {
+
         return new JsonResponse([
             'MyName' => 'Darko Klisurić'
         ]);
