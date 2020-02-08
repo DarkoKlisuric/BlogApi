@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\BlogPost;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -44,8 +45,9 @@ class BlogController extends AbstractController
      * @param BlogPost $post
      * @return JsonResponse
      * @Route("/post/{id}", name="blog_by_id", requirements={"id"="\d+"})
+     * @ParamConverter("post", class="App:BlogPost")
      */
-    public function post(BlogPost $post): JsonResponse
+    public function post($post): JsonResponse
     {
         return $this->json($post);
     }
