@@ -54,7 +54,7 @@ class AppFixtures extends Fixture
                 ->setAuthor($this->getReference('admin'))
                 ->setSlug($this->faker->slug);
 
-            $this->setReference('blog_post_'. $i, $blogPost );
+            $this->addReference('blog_post_'. $i, $blogPost );
             $manager->persist($blogPost);
         }
 
@@ -72,7 +72,8 @@ class AppFixtures extends Fixture
                 $comment = new Comment();
                 $comment->setContent($this->faker->realText())
                     ->setPublished($this->faker->dateTimeThisYear)
-                    ->setAuthor($this->getReference('admin'));
+                    ->setAuthor($this->getReference('admin'))
+                    ->setBlogPost($this->getReference('blog_post_'. $i));
 
                 $manager->persist($comment);
             }
