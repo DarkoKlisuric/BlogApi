@@ -3,19 +3,30 @@
 namespace App\DataFixtures;
 
 use App\Entity\BlogPost;
+use App\Entity\Comment;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Exception;
+use Faker\Factory;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class AppFixtures extends Fixture
 {
+    /**
+     * @var UserPasswordEncoderInterface
+     */
     private $passwordEncoder;
+
+    /**
+     * @var Factory
+     */
+    private $faker;
 
     public function __construct(UserPasswordEncoderInterface $passwordEncoder)
     {
         $this->passwordEncoder = $passwordEncoder;
+        $this->faker = Factory::create();
     }
 
     /**
@@ -35,33 +46,38 @@ class AppFixtures extends Fixture
      */
     public function loadBlogPosts(ObjectManager $manager): void
     {
-        $blogPost = new BlogPost();
-        $blogPost->setTitle('A first post!')
-            ->setPublished(new \DateTime())
-            ->setContent('Text content')
-            ->setAuthor($this->getReference('admin'))
-            ->setSlug('a-first-post');
+        for ($i=0; $i<100; $i++) {
+            $blogPost = new BlogPost();
+            $blogPost->setTitle($this->faker->realText(30))
+                ->setPublished($this->faker->dateTimeThisYear)
+                ->setContent($this->faker->realText())
+                ->setAuthor($this->getReference('admin'))
+                ->setSlug($this->faker->slug);
 
-        $manager->persist($blogPost);
-
-        $blogPost = new BlogPost();
-        $blogPost->setTitle('A second post!')
-            ->setPublished(new \DateTime())
-            ->setContent('Text content')
-            ->setAuthor($this->getReference('admin'))
-            ->setSlug('a-secong-post');
-
-        $manager->persist($blogPost);
+            $this->setReference('blog_post_'. $i, $blogPost );
+            $manager->persist($blogPost);
+        }
 
         $manager->flush();
     }
 
     /**
      * @param ObjectManager $manager
+     * @throws Exception
      */
     public function loadComments(ObjectManager $manager): void
     {
+        for ($i=0; $i<100; $i++) {
+            for ($j=0, $jMax = random_int(1, 10); $j< $jMax; $j++) {
+                $comment = new Comment();
+                $comment->setContent($this->faker->realText())
+                    ->setPublished($this->faker->dateTimeThisYear)
+                    ->setAuthor($this->getReference('admin'));
 
+                $manager->persist($comment);
+            }
+        }
+        $manager->flush();
     }
 
     public function loadUsers(ObjectManager $manager): void
