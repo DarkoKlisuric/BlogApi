@@ -22,6 +22,7 @@ security:
                 check_path: /api/login_check
                 # Handle successfull authentication
                 success_handler: lexik_jwt_authentication.handler.authentication_success
+                # Handle successfull faileru (invalid credenitals, no credentials etc)
                 failure_handler: lexik_jwt_authentication.handler.authentication_failure
             guard:
                 authenticators:
