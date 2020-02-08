@@ -35,7 +35,8 @@ class BlogPost
     private $content;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="posts")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $author;
 
@@ -112,25 +113,6 @@ class BlogPost
     /**
      * @return mixed
      */
-    public function getAuthor()
-    {
-        return $this->author;
-    }
-
-    /**
-     * @param mixed $author
-     * @return $this
-     */
-    public function setAuthor($author): self
-    {
-        $this->author = $author;
-
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
     public function getSlug()
     {
         return $this->slug;
@@ -143,6 +125,25 @@ class BlogPost
     public function setSlug($slug): self
     {
         $this->slug = $slug;
+
+        return $this;
+    }
+
+    /**
+     * @return User
+     */
+    public function getAuthor(): User
+    {
+        return $this->author;
+    }
+
+    /**
+     * @param User $author
+     * @return $this
+     */
+    public function setAuthor(User $author): self
+    {
+        $this->author = $author;
 
         return $this;
     }
