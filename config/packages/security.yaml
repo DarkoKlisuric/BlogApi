@@ -20,7 +20,8 @@ security:
             json_login:
                 # Here authentication will happen (token generation)
                 check_path: /api/login_check
-                success_handle: lexik_jwt_authentication.handler.authentication_success
+                # Handle successfull authentication
+                success_handler: lexik_jwt_authentication.handler.authentication_success
                 failure_handler: lexik_jwt_authentication.handler.authentication_failure
             guard:
                 authenticators:
