@@ -98,10 +98,13 @@ class BlogPost
 
     /**
      * @param mixed $content
+     * @return $this
      */
-    public function setContent($content): void
+    public function setContent($content): self
     {
         $this->content = $content;
+
+        return $this;
     }
 
     /**
@@ -114,10 +117,13 @@ class BlogPost
 
     /**
      * @param mixed $author
+     * @return $this
      */
-    public function setAuthor($author): void
+    public function setAuthor($author): self
     {
         $this->author = $author;
+
+        return $this;
     }
 
     /**
@@ -130,9 +136,12 @@ class BlogPost
 
     /**
      * @param mixed $slug
+     * @return $this
      */
-    public function setSlug($slug): void
+    public function setSlug($slug): self
     {
         $this->slug = $slug;
+
+        return $this;
     }
 }
