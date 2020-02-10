@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiSubresource;
 use App\Handler\AuthoredEntityInterface;
 use App\Handler\PublishedDateEntityInterface;
 use DateTimeInterface;
@@ -77,6 +78,7 @@ class BlogPost implements AuthoredEntityInterface, PublishedDateEntityInterface
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="blogPost")
+     * @ApiSubresource()
      */
     private $comments;
 
