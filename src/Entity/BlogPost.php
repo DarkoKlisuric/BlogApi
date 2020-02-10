@@ -51,12 +51,13 @@ class BlogPost implements AuthoredEntityInterface, PublishedDateEntityInterface
 
     /**
      * @ORM\Column(type="datetime")
-     * @Assert\NotBlank()
+     * @Groups({"post"})
      */
     private $published;
 
     /**
      * @ORM\Column(type="text")
+     * @Groups({"post"})
      * @Assert\NotBlank()
      * @Assert\Length(min="10")
      */

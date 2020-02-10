@@ -50,6 +50,7 @@ class Comment implements AuthoredEntityInterface, PublishedDateEntityInterface
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"post"})
      */
     private $published;
 
