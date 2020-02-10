@@ -23,6 +23,33 @@ class AppFixtures extends Fixture
      */
     private $faker;
 
+    private const USERS = [
+        [
+            'username' => 'admin',
+            'email' => 'admin@blog.com',
+            'name' => 'Darko Klisurić',
+            'password' => 'Pass123'
+        ],
+        [
+            'username' => 'john_doe',
+            'email' => 'john@blog.com',
+            'name' => 'John Doe',
+            'password' => 'Pass123'
+        ],
+        [
+            'username' => 'rob_smith',
+            'email' => 'smith@blog.com',
+            'name' => 'Rob Smith',
+            'password' => 'Pass123'
+        ],
+        [
+            'username' => 'jenny_rowling',
+            'email' => 'jenny@blog.com',
+            'name' => 'Jenny Rowling',
+            'password' => 'Pass123'
+        ]
+    ];
+
     public function __construct(UserPasswordEncoderInterface $passwordEncoder)
     {
         $this->passwordEncoder = $passwordEncoder;
@@ -46,15 +73,15 @@ class AppFixtures extends Fixture
      */
     public function loadBlogPosts(ObjectManager $manager): void
     {
-        for ($i=0; $i<100; $i++) {
+        for ($i = 0; $i < 100; $i++) {
             $blogPost = new BlogPost();
             $blogPost->setTitle($this->faker->realText(30))
                 ->setPublished($this->faker->dateTimeThisYear)
                 ->setContent($this->faker->realText())
-                ->setAuthor($this->getReference('admin'))
+                ->setAuthor($this->getRandomUserReference())
                 ->setSlug($this->faker->slug);
 
-            $this->addReference('blog_post_'. $i, $blogPost );
+            $this->addReference('blog_post_' . $i, $blogPost);
             $manager->persist($blogPost);
         }
 
@@ -67,13 +94,13 @@ class AppFixtures extends Fixture
      */
     public function loadComments(ObjectManager $manager): void
     {
-        for ($i=0; $i<100; $i++) {
-            for ($j=0, $jMax = random_int(1, 10); $j< $jMax; $j++) {
+        for ($i = 0; $i < 100; $i++) {
+            for ($j = 0, $jMax = random_int(1, 10); $j < $jMax; $j++) {
                 $comment = new Comment();
                 $comment->setContent($this->faker->realText())
                     ->setPublished($this->faker->dateTimeThisYear)
-                    ->setAuthor($this->getReference('admin'))
-                    ->setBlogPost($this->getReference('blog_post_'. $i));
+                    ->setAuthor($this->getRandomUserReference())
+                    ->setBlogPost($this->getReference('blog_post_' . $i));
 
                 $manager->persist($comment);
             }
@@ -83,17 +110,30 @@ class AppFixtures extends Fixture
 
     public function loadUsers(ObjectManager $manager): void
     {
-        $user = new User();
-        $user->setUsername('admin')
-            ->setEmail('admin@blog.com')
-            ->setName('Darko Klisurić')
-            ->setPassword($this->passwordEncoder->encodePassword(
-                $user,
-                'a'
-            ));
-        $this->addReference('admin', $user);
+        foreach (self::USERS as $userFixutre) {
+            $user = new User();
+            $user->setUsername($userFixutre['username'])
+                ->setEmail($userFixutre['email'])
+                ->setName($userFixutre['name'])
+                ->setPassword($this->passwordEncoder->encodePassword(
+                    $user,
+                    $userFixutre['password']
+                ));
+            $this->addReference('user_' . $userFixutre['username'], $user);
+            $manager->persist($user);
+        }
 
-        $manager->persist($user);
         $manager->flush();
+    }
+
+    /**
+     * @return object
+     * @throws Exception
+     */
+    private function getRandomUserReference(): object
+    {
+        $author = 'user_' . self::USERS[random_int(0, 3)]['username'];
+
+        return $this->getReference($author);
     }
 }
