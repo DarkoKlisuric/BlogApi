@@ -44,7 +44,11 @@ class PasswordHashSubscriber implements EventSubscriberInterface
         $user = $event->getControllerResult();
         $method = $event->getRequest()->getMethod();
 
-        if (!$user instanceof User || Request::METHOD_POST !== $method) {
+        $methodChecker = static function () use ($method) {
+            return in_array($method, [Request::METHOD_POST, Request::METHOD_PUT], true);
+        };
+
+        if (!$user instanceof User || !$methodChecker) {
             return;
         }
 
