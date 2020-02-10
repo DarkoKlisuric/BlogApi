@@ -3,10 +3,13 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\Handler\AuthoredEntityInterface;
+use App\Handler\PublishedDateEntityInterface;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -26,7 +29,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * )
  * @ORM\Entity(repositoryClass="App\Repository\BlogPostRepository")
  */
-class BlogPost
+class BlogPost implements AuthoredEntityInterface, PublishedDateEntityInterface
 {
     /**
      * @ORM\Id()
@@ -122,7 +125,7 @@ class BlogPost
      * @param DateTimeInterface $published
      * @return $this
      */
-    public function setPublished(DateTimeInterface $published): self
+    public function setPublished(DateTimeInterface $published): PublishedDateEntityInterface
     {
         $this->published = $published;
 
@@ -176,10 +179,10 @@ class BlogPost
     }
 
     /**
-     * @param User $author
-     * @return $this
+     * @param UserInterface $author
+     * @return AuthoredEntityInterface
      */
-    public function setAuthor(User $author): self
+    public function setAuthor(UserInterface $author): AuthoredEntityInterface
     {
         $this->author = $author;
 
