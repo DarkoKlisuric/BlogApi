@@ -10,6 +10,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
+/**
+ * Class PublishedDateEntitySubscriber
+ * @package App\EventSubscriber
+ */
 class PublishedDateEntitySubscriber implements EventSubscriberInterface
 {
     /**

@@ -89,6 +89,9 @@ class BlogPost implements AuthoredEntityInterface, PublishedDateEntityInterface
      */
     private $comments;
 
+    /**
+     * BlogPost constructor.
+     */
     public function __construct()
     {
         $this->comments = new ArrayCollection();

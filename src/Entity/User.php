@@ -113,22 +113,35 @@ class User implements UserInterface
      */
     private $comments;
 
+    /**
+     * User constructor.
+     */
     public function __construct()
     {
         $this->posts = new ArrayCollection();
         $this->comments = new ArrayCollection();
     }
 
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * @return string|null
+     */
     public function getUsername(): ?string
     {
         return $this->username;
     }
 
+    /**
+     * @param string $username
+     * @return $this
+     */
     public function setUsername(string $username): self
     {
         $this->username = $username;
@@ -136,11 +149,18 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getPassword(): ?string
     {
         return $this->password;
     }
 
+    /**
+     * @param string $password
+     * @return $this
+     */
     public function setPassword(string $password): self
     {
         $this->password = $password;
@@ -148,11 +168,37 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getRetypedPassword()
+    {
+        return $this->retypedPassword;
+    }
+
+    /**
+     * @param mixed $retypedPassword
+     * @return User
+     */
+    public function setRetypedPassword($retypedPassword): self
+    {
+        $this->retypedPassword = $retypedPassword;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
     public function getName(): ?string
     {
         return $this->name;
     }
 
+    /**
+     * @param string $name
+     * @return $this
+     */
     public function setName(string $name): self
     {
         $this->name = $name;
@@ -160,11 +206,18 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getEmail(): ?string
     {
         return $this->email;
     }
 
+    /**
+     * @param string $email
+     * @return $this
+     */
     public function setEmail(string $email): self
     {
         $this->email = $email;
@@ -210,21 +263,5 @@ class User implements UserInterface
     public function eraseCredentials()
     {
         return null;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getRetypedPassword()
-    {
-        return $this->retypedPassword;
-    }
-
-    /**
-     * @param mixed $retypedPassword
-     */
-    public function setRetypedPassword($retypedPassword): void
-    {
-        $this->retypedPassword = $retypedPassword;
     }
 }

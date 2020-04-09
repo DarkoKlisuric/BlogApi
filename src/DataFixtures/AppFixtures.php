@@ -12,17 +12,21 @@ use Faker\Factory;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
+/**
+ * Class AppFixtures
+ * @package App\DataFixtures
+ */
 class AppFixtures extends Fixture
 {
     /**
      * @var UserPasswordEncoderInterface
      */
-    private $passwordEncoder;
+    private UserPasswordEncoderInterface $passwordEncoder;
 
     /**
      * @var Factory
      */
-    private $faker;
+    private Factory $faker;
 
     private const USERS = [
         [
@@ -51,6 +55,10 @@ class AppFixtures extends Fixture
         ]
     ];
 
+    /**
+     * AppFixtures constructor.
+     * @param UserPasswordEncoderInterface $passwordEncoder
+     */
     public function __construct(UserPasswordEncoderInterface $passwordEncoder)
     {
         $this->passwordEncoder = $passwordEncoder;
@@ -109,6 +117,9 @@ class AppFixtures extends Fixture
         $manager->flush();
     }
 
+    /**
+     * @param ObjectManager $manager
+     */
     public function loadUsers(ObjectManager $manager): void
     {
         foreach (self::USERS as $userFixutre) {

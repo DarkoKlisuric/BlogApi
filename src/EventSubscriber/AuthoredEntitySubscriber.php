@@ -11,12 +11,16 @@ use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
+/**
+ * Class AuthoredEntitySubscriber
+ * @package App\EventSubscriber
+ */
 class AuthoredEntitySubscriber implements EventSubscriberInterface
 {
     /**
      * @var TokenStorageInterface
      */
-    private $storage;
+    private TokenStorageInterface $storage;
 
     /**
      * AuthoredEntitySubscriber constructor.
