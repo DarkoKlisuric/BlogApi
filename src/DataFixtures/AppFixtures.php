@@ -10,6 +10,7 @@ use Doctrine\Persistence\ObjectManager;
 use Exception;
 use Faker\Factory;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class AppFixtures extends Fixture
 {
@@ -127,7 +128,7 @@ class AppFixtures extends Fixture
     }
 
     /**
-     * @return object
+     * @return UserInterface
      * @throws Exception
      */
     private function getRandomUserReference(): object
