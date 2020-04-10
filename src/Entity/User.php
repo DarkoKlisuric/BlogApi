@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\Enum\RoleEnum;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -114,12 +115,19 @@ class User implements UserInterface
     private $comments;
 
     /**
+     * @var $roles
+     * @ORM\Column(type="simple_array", length=200)
+     */
+    private $roles = RoleEnum::DEFAULT_ROLES;
+
+    /**
      * User constructor.
      */
     public function __construct()
     {
         $this->posts = new ArrayCollection();
         $this->comments = new ArrayCollection();
+        $this->roles = RoleEnum::DEFAULT_ROLES;
     }
 
     /**
@@ -244,9 +252,16 @@ class User implements UserInterface
     /**
      * @inheritDoc
      */
-    public function getRoles()
+    public function getRoles(): array
     {
-        return ['ROLE_USER'];
+        return $this->roles;
+    }
+
+    public function setRoles(array $roles)
+    {
+        $this->roles = $roles;
+
+        return $this;
     }
 
     /**

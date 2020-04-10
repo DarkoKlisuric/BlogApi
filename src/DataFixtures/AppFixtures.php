@@ -26,7 +26,7 @@ class AppFixtures extends Fixture
     /**
      * @var Factory
      */
-    private Factory $faker;
+    private $faker;
 
     private const USERS = [
         [
