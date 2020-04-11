@@ -27,8 +27,8 @@ security:
                 # Sending token with each request
             guard:
                 authenticators:
-                    - lexik_jwt_authentication.jwt_token_authenticator
-
+       #             - lexik_jwt_authentication.jwt_token_authenticator
+                    - App\Security\TokenAuthenticator
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication
 

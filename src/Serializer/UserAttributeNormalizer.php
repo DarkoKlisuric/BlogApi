@@ -70,8 +70,8 @@ class UserAttributeNormalizer implements ContextAwareNormalizerInterface, Serial
     private function passOn($object, string $format, array $context)
     {
         if (!$this->serializer instanceof NormalizerInterface) {
-            throw new \LogicException(sprintf(
-                'Cannot normalize object "%s" because the injected serializer is not a normalizer.',
+            throw new \LogicException(
+                sprintf('Cannot normalize object "%s" because the injected serializer is not a normalizer.',
                 $object));
         }
 

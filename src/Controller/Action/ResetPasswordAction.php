@@ -32,6 +32,8 @@ class ResetPasswordAction extends AppController
                 $data, $data->getNewPassword()
             )
         );
+        // After password change, old tokens are still valid
+        $data->setPasswordChangeDate(time());
 
         $this->getManager()->flush();
 
