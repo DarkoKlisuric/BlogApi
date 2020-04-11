@@ -2,7 +2,6 @@
 
 namespace App\Serializer;
 
-use ApiPlatform\Core\Exception\RuntimeException;
 use ApiPlatform\Core\Serializer\SerializerContextBuilderInterface;
 use App\Entity\User;
 use App\Enum\RoleEnum;
@@ -21,14 +20,12 @@ class UserContextBuilder implements SerializerContextBuilderInterface
     private SerializerContextBuilderInterface $decorated;
 
     /**
-     * @var AuthorizationCheckerInterface 
+     * @var AuthorizationCheckerInterface
      */
     private AuthorizationCheckerInterface $authorizationChecker;
 
     /**
-     * UserContextBuilder constructor.
-     * @param SerializerContextBuilderInterface $decorated
-     * @param AuthorizationCheckerInterface $authorizationChecker
+     * @inheritDoc
      */
     public function __construct(SerializerContextBuilderInterface $decorated,
         AuthorizationCheckerInterface $authorizationChecker)
