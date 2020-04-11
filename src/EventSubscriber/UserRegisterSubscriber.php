@@ -4,6 +4,7 @@ namespace App\EventSubscriber;
 
 use ApiPlatform\Core\EventListener\EventPriorities;
 use App\Entity\User;
+use App\Security\TokenGenerator;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
@@ -14,20 +15,27 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
  * Class PasswordHashSubscriber
  * @package App\EventSubscriber
  */
-class PasswordHashSubscriber implements EventSubscriberInterface
+class UserRegisterSubscriber implements EventSubscriberInterface
 {
     /**
      * @var UserPasswordEncoderInterface
      */
     private UserPasswordEncoderInterface $passwordEncoder;
+    /**
+     * @var TokenGenerator
+     */
+    private TokenGenerator $tokenGenerator;
 
     /**
      * PasswordHashSubscriber constructor.
      * @param UserPasswordEncoderInterface $passwordEncoder
+     * @param TokenGenerator $tokenGenerator
      */
-    public function __construct(UserPasswordEncoderInterface $passwordEncoder)
+    public function __construct(UserPasswordEncoderInterface $passwordEncoder,
+                                TokenGenerator $tokenGenerator)
     {
         $this->passwordEncoder = $passwordEncoder;
+        $this->tokenGenerator = $tokenGenerator;
     }
 
     /**
@@ -36,14 +44,14 @@ class PasswordHashSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            KernelEvents::VIEW => ['hashPassword', EventPriorities::PRE_WRITE]
+            KernelEvents::VIEW => ['userRegistered', EventPriorities::PRE_WRITE]
         ];
     }
 
     /**
      * @param ViewEvent $event
      */
-    public function hashPassword(ViewEvent $event): void
+    public function userRegistered(ViewEvent $event): void
     {
         $user = $event->getControllerResult();
         $method = $event->getRequest()->getMethod();
@@ -55,9 +63,14 @@ class PasswordHashSubscriber implements EventSubscriberInterface
         if (!$user instanceof User || !$methodChecker) {
             return;
         }
-
+        // Hashing password
         $user->setPassword(
             $this->passwordEncoder->encodePassword($user, $user->getPassword())
+        );
+
+        // Create confirmation token
+        $user->setConfiramtationToken(
+            $this->tokenGenerator->getRandomSecureToken()
         );
     }
 }
