@@ -169,6 +169,16 @@ class User implements UserInterface
     private $roles = RoleEnum::DEFAULT_ROLES;
 
     /**
+     * @ORM\Column(type="boolean")
+     */
+    private $enabled;
+
+    /**
+     * @ORM\Column(type="string", length=40, nullable=true)
+     */
+    private $confiramtationToken;
+
+    /**
      * User constructor.
      */
     public function __construct()
@@ -176,6 +186,8 @@ class User implements UserInterface
         $this->posts = new ArrayCollection();
         $this->comments = new ArrayCollection();
         $this->roles = RoleEnum::DEFAULT_ROLES;
+        $this->enabled = false;
+        $this->confiramtationToken = null;
     }
 
     /**
@@ -389,11 +401,49 @@ class User implements UserInterface
     }
 
     /**
+     * @return bool
+     */
+    public function isEnabled(): bool
+    {
+        return $this->enabled;
+    }
+
+    /**
+     * @param bool $enabled
+     * @return User
+     */
+    public function setEnabled(bool $enabled): self
+    {
+        $this->enabled = $enabled;
+
+        return $this;
+    }
+
+    /**
+     * @return null
+     */
+    public function getConfiramtationToken()
+    {
+        return $this->confiramtationToken;
+    }
+
+    /**
+     * @param null $confiramtationToken
+     * @return User
+     */
+    public function setConfiramtationToken($confiramtationToken): self
+    {
+        $this->confiramtationToken = $confiramtationToken;
+
+        return $this;
+    }
+
+    /**
      * @inheritDoc
      */
     public function getSalt()
     {
-        return null;
+        // TODO: Implement getSalt() method.
     }
 
     /**
@@ -401,6 +451,6 @@ class User implements UserInterface
      */
     public function eraseCredentials()
     {
-        return null;
+        // TODO: Implement eraseCredentials() method.
     }
 }
