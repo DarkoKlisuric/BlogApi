@@ -6,6 +6,7 @@ use App\Entity\BlogPost;
 use App\Entity\Comment;
 use App\Entity\User;
 use App\Enum\RoleEnum;
+use App\Security\TokenGenerator;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Exception;
@@ -35,53 +36,67 @@ class AppFixtures extends Fixture
             'email' => 'admin@blog.com',
             'name' => 'Darko Klisurić',
             'password' => 'Pass123',
-            'roles' => [RoleEnum::ROLE_SUPERADMIN]
+            'roles' => [RoleEnum::ROLE_SUPERADMIN],
+            'enabled' => true
         ],
         [
             'username' => 'john_doe',
             'email' => 'john@blog.com',
             'name' => 'John Doe',
             'password' => 'Pass123',
-            'roles' => [RoleEnum::ROLE_ADMIN]
+            'roles' => [RoleEnum::ROLE_ADMIN],
+            'enabled' => true
         ],
         [
             'username' => 'rob_smith',
             'email' => 'smith@blog.com',
             'name' => 'Rob Smith',
             'password' => 'Pass123',
-            'roles' => [RoleEnum::ROLE_WRITER]
+            'roles' => [RoleEnum::ROLE_WRITER],
+            'enabled' => true
         ],
         [
             'username' => 'jenny_rowling',
             'email' => 'jenny@blog.com',
             'name' => 'Jenny Rowling',
             'password' => 'Pass123',
-            'roles' => [RoleEnum::ROLE_WRITER]
+            'roles' => [RoleEnum::ROLE_WRITER],
+            'enabled' => true
         ],
         [
             'username' => 'marko_markic',
             'email' => 'marko@blog.com',
             'name' => 'Marko Markic',
             'password' => 'Pass123',
-            'roles' => [RoleEnum::ROLE_EDITOR]
+            'roles' => [RoleEnum::ROLE_EDITOR],
+            'enabled' => false
         ],
         [
             'username' => 'pero_peric',
             'email' => 'pero@blog.com',
             'name' => 'Pero Peric',
             'password' => 'Pass123',
-            'roles' => [RoleEnum::ROLE_COMMENTATOR]
+            'roles' => [RoleEnum::ROLE_COMMENTATOR],
+            'enabled' => true
         ]
     ];
+    /**
+     * @var TokenGenerator
+     */
+    private TokenGenerator $tokenGenerator;
 
     /**
      * AppFixtures constructor.
      * @param UserPasswordEncoderInterface $passwordEncoder
+     * @param TokenGenerator $tokenGenerator
      */
-    public function __construct(UserPasswordEncoderInterface $passwordEncoder)
+    public function __construct(UserPasswordEncoderInterface $passwordEncoder,
+                                TokenGenerator $tokenGenerator)
     {
         $this->passwordEncoder = $passwordEncoder;
         $this->faker = Factory::create();
+
+        $this->tokenGenerator = $tokenGenerator;
     }
 
     /**
@@ -151,7 +166,11 @@ class AppFixtures extends Fixture
                     $userFixutre['password']
                 ))
                 ->setRoles($userFixutre['roles'])
-                ->setEnabled(true);
+                ->setEnabled($userFixutre['enabled']);
+
+            if (!$userFixutre['enabled']) {
+                $user->setConfiramtationToken($this->tokenGenerator->getRandomSecureToken());
+            }
 
             $this->addReference('user_' . $userFixutre['username'], $user);
 
