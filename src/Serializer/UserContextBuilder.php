@@ -38,7 +38,6 @@ class UserContextBuilder implements SerializerContextBuilderInterface
      * @param Request $request
      * @param bool $normalization
      * @param array|null $extractedAttributes
-     * @throws RuntimeException
      * @return array
      */
     public function createFromRequest(Request $request,
