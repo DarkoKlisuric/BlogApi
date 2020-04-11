@@ -9,6 +9,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\Validator\Constraints\UserPassword;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -66,7 +67,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"put", "post"})
+     * @Groups({"post"})
      * @Assert\NotBlank()
      * @Assert\Length(min=7, max=255)
      * @Assert\Regex(
@@ -77,7 +78,7 @@ class User implements UserInterface
     private $password;
 
     /**
-     * @Groups({"put", "post"})
+     * @Groups({"post"})
      * @Assert\NotBlank()
      * @Assert\Expression(
      *     "this.getPassword() === this.getRetypedPassword()",
@@ -85,6 +86,34 @@ class User implements UserInterface
      * )
      */
     private $retypedPassword;
+
+    /**
+     * @Groups({"put-reset-password"})
+     * @Assert\NotBlank()
+     * @Assert\Length(min=7, max=255)
+     * @Assert\Regex(
+     *     pattern="/(?=.*[A-Z)(?=.*[a-z])(?=.*[0-9]).{7,}/",
+     *     message="Password must be seven characters long and contain at least one digit, one upper case letter and one lower case letter"
+     * )
+     */
+    private $newPassword;
+
+    /**
+     * @Groups({"put-reset-password"})
+     * @Assert\NotBlank()
+     * @Assert\Expression(
+     *     "this.getNewPassword() === this.getNewRetypedPassword()",
+     *     message="Passwords does not match"
+     * )
+     */
+    private $newRetypedPassword;
+
+    /**
+     * @Groups({"put-reset-password"})
+     * @Assert\NotBlank()
+     * @UserPassword()
+     */
+    private $oldPassword;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -180,7 +209,7 @@ class User implements UserInterface
     /**
      * @return mixed
      */
-    public function getRetypedPassword()
+    public function getRetypedPassword(): ?string
     {
         return $this->retypedPassword;
     }
@@ -261,6 +290,63 @@ class User implements UserInterface
     public function setRoles(array $roles)
     {
         $this->roles = $roles;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getNewPassword(): ?string
+    {
+        return $this->newPassword;
+    }
+
+    /**
+     * @param mixed $newPassword
+     * @return User
+     */
+    public function setNewPassword($newPassword): self
+    {
+        $this->newPassword = $newPassword;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getNewRetypedPassword(): ?string
+    {
+        return $this->newRetypedPassword;
+    }
+
+    /**
+     * @param mixed $newRetypedPassword
+     * @return User
+     */
+    public function setNewRetypedPassword($newRetypedPassword): self
+    {
+        $this->newRetypedPassword = $newRetypedPassword;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getOldPassword(): ?string
+    {
+        return $this->oldPassword;
+    }
+
+    /**
+     * @param mixed $oldPassword
+     * @return User
+     */
+    public function setOldPassword($oldPassword): self
+    {
+        $this->oldPassword = $oldPassword;
 
         return $this;
     }
