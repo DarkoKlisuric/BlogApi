@@ -27,13 +27,9 @@ security:
                 # Sending token with each request
             guard:
                 authenticators:
-       #             - lexik_jwt_authentication.jwt_token_authenticator
+                   #- lexik_jwt_authentication.jwt_token_authenticator
                     - App\Security\TokenAuthenticator
-            # activate different ways to authenticate
-            # https://symfony.com/doc/current/security.html#firewalls-authentication
-
-            # https://symfony.com/doc/current/security/impersonating_user.html
-            # switch_user: true
+            user_checker: App\Security\UserEnabledChecker
 
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
