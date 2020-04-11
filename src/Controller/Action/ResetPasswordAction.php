@@ -2,13 +2,9 @@
 
 namespace App\Controller\Action;
 
-use ApiPlatform\Core\Validator\ValidatorInterface;
 use App\Controller\AppController;
 use App\Entity\User;
-use Doctrine\ORM\EntityManagerInterface;
-use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
  * Class ResetPasswordAction
@@ -20,44 +16,6 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 class ResetPasswordAction extends AppController
 {
     /**
-     * @var ValidatorInterface
-     */
-    private ValidatorInterface $validator;
-
-    /**
-     * @var UserPasswordEncoderInterface
-     */
-    private UserPasswordEncoderInterface $passwordEncoder;
-
-    /**
-     * @var EntityManagerInterface
-     */
-    private EntityManagerInterface $manager;
-
-    /**
-     * @var JWTTokenManagerInterface
-     */
-    private JWTTokenManagerInterface $tokenManager;
-
-    /**
-     * ResetPasswordAction constructor.
-     * @param ValidatorInterface $validator
-     * @param UserPasswordEncoderInterface $passwordEncoder
-     * @param EntityManagerInterface $manager
-     * @param JWTTokenManagerInterface $tokenManager
-     */
-    public function __construct(ValidatorInterface $validator,
-                                UserPasswordEncoderInterface $passwordEncoder,
-                                EntityManagerInterface $manager,
-                                JWTTokenManagerInterface $tokenManager)
-    {
-        $this->validator = $validator;
-        $this->passwordEncoder = $passwordEncoder;
-        $this->manager = $manager;
-        $this->tokenManager = $tokenManager;
-    }
-
-    /**
      * @param User $data
      *
      * Validator is only called after we return the data from this action!
@@ -67,17 +25,17 @@ class ResetPasswordAction extends AppController
     public function __invoke(User $data)
     {
         // Entity is persisted automatically, only if validaton pass
-        $this->validator->validate($data);
+        $this->getValidator()->validate($data);
 
         $data->setPassword(
-            $this->passwordEncoder->encodePassword(
+            $this->getPasswordEncoder()->encodePassword(
                 $data, $data->getNewPassword()
             )
         );
 
-        $this->manager->flush();
+        $this->getManager()->flush();
 
-        $token = $this->tokenManager->create($data);
+        $token = $this->getTokenManager()->create($data);
 
         return new JsonResponse(['token' => $token]);
     }
