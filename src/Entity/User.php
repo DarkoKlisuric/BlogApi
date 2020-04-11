@@ -18,26 +18,36 @@ use Symfony\Component\Validator\Constraints as Assert;
  *    itemOperations={
  *     "get" = {
  *          "access_control" = "is_granted('IS_AUTHENTICATED_FULLY')",
- *          "normalization_context"={
+ *          "normalization_context" = {
  *               "groups" = {"get"}
  *               }
  *          },
  *     "put" = {
  *          "access_control" = "is_granted('IS_AUTHENTICATED_FULLY') and object == user",
- *           "denormalization_context"={
+ *           "denormalization_context" = {
  *              "groups" = {"put"}
  *            },
- *           "normalization_context"={
+ *           "normalization_context" = {
  *              "groups"={"get"}
  *           }
  *        }
  *     },
- *     collectionOperations={
+ *     "put-reset-password" = {
+ *          "access_control" = "is_granted('IS_AUTHENTICATED_FULLY') and object == user",
+ *          "method" = "PUT",
+ *          "path" = "/users/{id}/reset-password",
+ *          "controller" = ResetPasswordAction::class,
+ *           "denormalization_context" = {
+ *              "groups" = {"put"}
+ *            },
+ *         }
+ *     },
+ *     collectionOperations = {
  *         "post"={
- *           "denormalization_context"={
+ *           "denormalization_context" = {
  *              "groups" = {"post"}
  *            },
-*            "normalization_context"={
+*            "normalization_context" = {
 *               "groups"={"get"}
  *           }
  *         }
