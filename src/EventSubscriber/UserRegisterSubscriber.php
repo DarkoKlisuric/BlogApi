@@ -4,6 +4,7 @@ namespace App\EventSubscriber;
 
 use ApiPlatform\Core\EventListener\EventPriorities;
 use App\Entity\User;
+use App\Mailer\RegistrationConfirmationMailer;
 use App\Security\TokenGenerator;
 use Swift_Message;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -11,6 +12,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 /**
  * Class PasswordHashSubscriber
@@ -29,18 +33,19 @@ class UserRegisterSubscriber implements EventSubscriberInterface
     private TokenGenerator $tokenGenerator;
 
     /**
-     * @var \Swift_Mailer
+     * @var RegistrationConfirmationMailer
      */
-    private \Swift_Mailer $mailer;
+    private RegistrationConfirmationMailer $mailer;
 
     /**
      * PasswordHashSubscriber constructor.
      * @param UserPasswordEncoderInterface $passwordEncoder
      * @param TokenGenerator $tokenGenerator
+     * @param RegistrationConfirmationMailer $mailer
      */
     public function __construct(UserPasswordEncoderInterface $passwordEncoder,
                                 TokenGenerator $tokenGenerator,
-                                \Swift_Mailer $mailer)
+                                RegistrationConfirmationMailer $mailer)
     {
         $this->passwordEncoder = $passwordEncoder;
         $this->tokenGenerator = $tokenGenerator;
@@ -59,6 +64,9 @@ class UserRegisterSubscriber implements EventSubscriberInterface
 
     /**
      * @param ViewEvent $event
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
     public function userRegistered(ViewEvent $event): void
     {
@@ -83,6 +91,6 @@ class UserRegisterSubscriber implements EventSubscriberInterface
         );
 
         // Send e-mail
-        $this->sendMail();
+        $this->mailer->sendConfirmationEmail($user);
     }
 }

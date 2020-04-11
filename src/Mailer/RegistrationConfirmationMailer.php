@@ -44,7 +44,7 @@ class RegistrationConfirmationMailer
             'user' => $user
         ]);
 
-        $message = (new Swift_Message('Hello from API PLATFORM'))
+        $message = (new Swift_Message('Please confirm your account!'))
             ->setFrom('klisuric1995@gmail.com')
             ->setTo($user->getEmail())
             ->setBody($body);

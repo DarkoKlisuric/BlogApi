@@ -15,7 +15,7 @@ class HomeController extends AbstractController
 {
     /**
      * @return JsonResponse
-     * @Route("/", name="my_route")
+     * @Route("/", name="default")
      */
     public function index()
     {
