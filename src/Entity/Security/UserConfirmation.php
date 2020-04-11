@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entity;
+namespace App\Entity\Security;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -19,7 +19,7 @@ class UserConfirmation
 {
     /**
      * @Assert\NotBlank()
-     * @Assert\Length(min=40, max=40)
+     * @Assert\Length(min=30, max=30    )
      */
     public $confirmationToken;
 }
