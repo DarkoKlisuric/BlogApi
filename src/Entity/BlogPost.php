@@ -18,7 +18,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\RangeFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
-
+use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
 /**
  * @ApiFilter(
  *     SearchFilter::class,
@@ -45,6 +45,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *     properties={"id"}
  * )
  * @example /api/blog_posts?id[gte]=100&id[lt]=1000
+ *
  * id[gte] - greater than or equal
  * id[lt] - less than or equal
  *
@@ -56,7 +57,19 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *         "title"
  *     }
  * )
- * @example /api/blog_posts?_order[id]=desc&order[published]=asc
+ * @example /api/blog_posts?order[id]=desc&order[published]=asc
+ *
+ * @ApiFilter(
+ *     PropertyFilter::class,
+ *     arguments={
+ *        "parameterName": "properties",
+ *        "overrideDefaultProperties": false,
+ *        "whitelist": {"id", "author", "slug", "title", "content"}
+ *     })
+ *
+ * @example /api/blog_posts?properties[]id&properties[]=author
+ *
+ * Returning only defined fields in properties
  *
  * @ApiResource(
  *     attributes={"order" = {"published": "DESC"}},
