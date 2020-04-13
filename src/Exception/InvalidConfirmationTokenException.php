@@ -5,18 +5,18 @@ namespace App\Exception;
 use Throwable;
 
 /**
- * Class EmptyBodyException
+ * Class InvalidConfirmationTokenException
  * @package App\Exception
  */
-class EmptyBodyException extends \Exception
+class InvalidConfirmationTokenException extends \Exception
 {
     /**
      * @var string
      */
-    protected $message = 'The body of the POST/PUT method cannot be empty!';
+    protected $message = 'Confirmation token is invalid';
 
     /**
-     * EmptyBodyException constructor.
+     * InvalidConfirmationTokenException constructor.
      * @param string $message
      * @param int $code
      * @param Throwable|null $previous
