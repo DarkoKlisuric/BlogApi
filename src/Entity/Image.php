@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use App\Controller\Action\UploadImageAction;
 
@@ -40,6 +41,7 @@ class Image
 
     /**
      * @ORM\Column(name="url", type="string", nullable=true)
+     * @Groups({"get-blog-post-with-author"})
      */
     private $url;
 
