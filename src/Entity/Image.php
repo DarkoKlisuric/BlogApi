@@ -91,4 +91,12 @@ class Image
 
         return $this;
     }
+
+    /**
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return $this->id . ':' . $this->url;
+    }
 }
