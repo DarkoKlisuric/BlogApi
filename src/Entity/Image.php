@@ -5,13 +5,24 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use App\Controller\Action\UploadImageAction;
 
 /**
  * Class Image
  * @package App\Entity
  * @ORM\Entity()
  * @Vich\Uploadable()
- * @ApiResource()
+ * @ApiResource(
+ *      collectionOperations = {
+ *        "get",
+ *        "post" = {
+ *          "method" = "POST",
+ *          "path" = "/images",
+ *          "controller" = UploadImageAction::class,
+ *          "defaults" = {"_api_receive" = false}
+ *       }
+ *    }
+ * )
  */
 class Image
 {
