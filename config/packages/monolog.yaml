@@ -1,0 +1,5 @@
+monolog:
+  channels: ['token_confirmation']
+
+# Finding specific log
+# tail var/log/dev.log -n 1000 | grep "token_confirmation"
