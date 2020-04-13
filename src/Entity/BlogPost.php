@@ -15,6 +15,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 
 /**
  * @ApiFilter(
@@ -26,6 +27,16 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *        "author": "exact"
  *     }
  * )
+ * @example /api/blog_posts?id=5&title=MyTitle&author=/api/users/1
+ *
+ * @ApiFilter(
+ *     DateFilter::class,
+ *     properties={
+ *        "published"
+ *     }
+ * )
+ * @example /api/blog_posts?published[strictly_after]=2020-01-01&published[before]=2020-12-31
+ *
  * @ApiResource(
  *     attributes={"order" = {"published": "DESC"}},
  *     itemOperations={
