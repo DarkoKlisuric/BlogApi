@@ -9,7 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * Class MailerController
  * @package App\Controller
- * @Route(/mailer)
+ * @Route("/mailer")
  */
 class MailerController extends AppController
 {
