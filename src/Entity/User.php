@@ -40,6 +40,7 @@ use App\Controller\Action\ResetPasswordAction;
  *          "denormalization_context" = {
  *              "groups" = {"put-reset-password"}
  *            },
+ *          "validation_groups"={"put-reset-password"}
  *         }
  *     },
  *     collectionOperations = {
@@ -49,7 +50,8 @@ use App\Controller\Action\ResetPasswordAction;
  *            },
 *            "normalization_context" = {
 *               "groups"={"get"}
- *           }
+ *           },
+ *           "validation_groups"={"post"}
  *         }
  *      },
  *  )
