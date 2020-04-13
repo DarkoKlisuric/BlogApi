@@ -16,6 +16,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\RangeFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 
 /**
  * @ApiFilter(
@@ -36,6 +38,24 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
  *     }
  * )
  * @example /api/blog_posts?published[strictly_after]=2020-01-01&published[before]=2020-12-31
+ *
+ * @ApiFilter(
+ *     RangeFilter::class,
+ *     properties={"id"}
+ * )
+ * @example /api/blog_posts?id[gte]=100&id[lt]=1000
+ * id[gte] - greater than or equal
+ * id[lt] - less than or equal
+ *
+ * @ApiFilter(
+ *     OrderFilter::class,
+ *     properties={
+ *         "id",
+ *         "published",
+ *         "title"
+ *     }
+ * )
+ * @example /api/blog_posts?_order[id]=desc&order[published]=asc
  *
  * @ApiResource(
  *     attributes={"order" = {"published": "DESC"}},
