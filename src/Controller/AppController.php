@@ -33,9 +33,9 @@ class AppController extends AbstractController
     private JWTTokenManagerInterface $tokenManager;
 
     /**
-     * @var Request
+     * @var RequestStack
      */
-    private Request $request;
+    private RequestStack $request;
 
     /**
      * @param ValidatorInterface $validator
@@ -90,7 +90,7 @@ class AppController extends AbstractController
     }
 
     /**
-     * @return Request
+     * @return Request|null
      */
     public function getRequest(): Request
     {
