@@ -72,7 +72,7 @@ use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
  * Returning only defined fields in properties
  *
  * @ApiResource(
- *     attributes={"order" = {"published": "DESC"}},
+ *     attributes={"order" = {"published": "DESC"}, "maximum_items_per_page"=50},
  *     itemOperations={
  *     "get"={
  *     "normalization_context"={

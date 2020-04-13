@@ -13,4 +13,7 @@ api_platform:
             page_parameter_name: _page
             client_enabled: true
             enabled_parameter_name: pagination
+            client_items_per_page: true
+            items_per_page_parameter_name: itemsPerPage
+            maximum_items_per_page: 20
 
