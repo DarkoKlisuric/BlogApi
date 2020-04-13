@@ -9,11 +9,19 @@ api_platform:
         versions: [3]
     collection:
         pagination:
-            enabled: false
+            # User can decide if he wont's pagination
+            # /api/Blog_posts/?pagination=true, /api/Blog_posts/?pagination=false
             page_parameter_name: _page
             client_enabled: true
             enabled_parameter_name: pagination
+            # How many items per page
+            # /api/Blog_posts?itemsPerPage=15
             client_items_per_page: true
             items_per_page_parameter_name: itemsPerPage
             maximum_items_per_page: 20
+            # Partial option
+            # /api/Blog_posts?partial=true, /api/Blog_posts?partial=false
+            partial: false
+            client_partial: true,
+            partial_parameter_name: 'partial'
 
