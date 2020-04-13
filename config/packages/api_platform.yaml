@@ -22,6 +22,6 @@ api_platform:
             # Partial option
             # /api/Blog_posts?partial=true, /api/Blog_posts?partial=false
             partial: false
-            client_partial: true,
+            client_partial: true
             partial_parameter_name: 'partial'
 
