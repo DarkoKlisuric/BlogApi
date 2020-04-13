@@ -26,7 +26,8 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *        "id": "exact",
  *        "title": "partial",
  *        "content": "parital",
- *        "author": "exact"
+ *        "author": "exact",
+ *        "author.name": "partial"
  *     }
  * )
  * @example /api/blog_posts?id=5&title=MyTitle&author=/api/users/1
