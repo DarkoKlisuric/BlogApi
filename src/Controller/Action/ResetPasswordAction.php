@@ -20,11 +20,12 @@ class ResetPasswordAction extends AppController
      *
      * Validator is only called after we return the data from this action!
      * Only hear is checks for user current password, but we've just modified it!
+     *
      * @return JsonResponse
      */
     public function __invoke(User $data)
     {
-        // Entity is persisted automatically, only if validaton pass
+        // Entity is persisted automatically, only if validation pass
         $this->getValidator()->validate($data);
 
         $data->setPassword(

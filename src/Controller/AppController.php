@@ -6,6 +6,8 @@ use ApiPlatform\Core\Validator\ValidatorInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class AppController extends AbstractController
@@ -31,21 +33,28 @@ class AppController extends AbstractController
     private JWTTokenManagerInterface $tokenManager;
 
     /**
-     * ResetPasswordAction constructor.
+     * @var Request
+     */
+    private Request $request;
+
+    /**
      * @param ValidatorInterface $validator
      * @param UserPasswordEncoderInterface $passwordEncoder
      * @param EntityManagerInterface $manager
      * @param JWTTokenManagerInterface $tokenManager
+     * @param RequestStack $request
      */
     public function __construct(ValidatorInterface $validator,
                                 UserPasswordEncoderInterface $passwordEncoder,
                                 EntityManagerInterface $manager,
-                                JWTTokenManagerInterface $tokenManager)
+                                JWTTokenManagerInterface $tokenManager,
+                                RequestStack $request)
     {
         $this->validator = $validator;
         $this->passwordEncoder = $passwordEncoder;
         $this->manager = $manager;
         $this->tokenManager = $tokenManager;
+        $this->request = $request;
     }
 
     /**
@@ -78,5 +87,13 @@ class AppController extends AbstractController
     public function getTokenManager(): JWTTokenManagerInterface
     {
         return $this->tokenManager;
+    }
+
+    /**
+     * @return Request
+     */
+    public function getRequest(): Request
+    {
+        return $this->request->getCurrentRequest();
     }
 }
