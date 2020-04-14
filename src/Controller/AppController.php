@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
-class AppController extends AbstractController
+class AppController extends AbstractController implements ControllerInterFace
 {
     /**
      * @var ValidatorInterface
