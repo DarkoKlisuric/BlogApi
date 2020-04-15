@@ -1,0 +1,19 @@
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+<form action="{{ path('security_login') }}" method="post">
+    <div>
+        <div class="form-group">
+            <label class="form-control-label required" for="username">Username</label>
+            <input type="text" id="username" name="_username" required="required" class="form-control">
+        </div>
+        <div class="form-group">
+            <label class="form-control-label required" for="password">Password</label>
+            <input type="password" id="password" name="_password" required="required" class="form-control">
+        </div>
+        <div class="form-group">
+            <button type="submit" id="Login" name="Login" class="btn-secondary btn">Login</button>
+        </div>
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+        <input type="hidden" name="_target_path" value="{{ app.request.get('redirect_to') }}">
+    </div>
+</form>
