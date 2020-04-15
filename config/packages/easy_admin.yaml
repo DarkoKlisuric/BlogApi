@@ -10,3 +10,11 @@ easy_admin:
             controller: App\Controller\UserAdminController
         Image:
             class: App\Entity\Image
+            list:
+                fields:
+                    - id
+                    - { property: 'url', type: 'image', label: 'Image' }
+            form:
+                fields:
+                    - { property: 'file', type: 'Vich\UploaderBundle\Form\Type\VichFileType' }
+

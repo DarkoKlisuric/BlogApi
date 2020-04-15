@@ -3,7 +3,7 @@ vich_uploader:
 
     mappings:
         images:
-            uri_prefix: /uploads
-            upload_destination: '%kernel.project_dir%/public/uploads/uploads'
+            uri_prefix: /images
+            upload_destination: '%kernel.project_dir%/public/images'
             # Deside how uploaded files would be renamed
             namer: Vich\UploaderBundle\Naming\UniqidNamer

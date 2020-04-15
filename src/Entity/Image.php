@@ -14,16 +14,15 @@ use App\Controller\Action\UploadImageAction;
  * @ORM\Entity()
  * @Vich\Uploadable()
  * @ApiResource(
- *      attributes={"order" = {"id": "DESC"}},
- *      collectionOperations = {
- *        "get",
- *        "post" = {
- *          "method" = "POST",
- *          "path" = "/uploads/images",
- *          "controller" = UploadImageAction::class,
- *          "defaults" = {"_api_receive" = false}
- *       }
- *    }
+ *     collectionOperations={
+ *         "get",
+ *         "post"={
+ *             "method"="POST",
+ *             "path"="/images",
+ *             "controller"=UploadImageAction::class,
+ *             "defaults"={"_api_receive"=false}
+ *         }
+ *     }
  * )
  */
 class Image
@@ -36,7 +35,7 @@ class Image
     private $id;
 
     /**
-     * @Vich\UploadableField(mapping="uploads", fileNameProperty="url")
+     * @Vich\UploadableField(mapping="images", fileNameProperty="url")
      */
     private $file;
 
@@ -78,7 +77,7 @@ class Image
      */
     public function getUrl()
     {
-        return '/uploads/images/' . $this->url;
+        return '/images/' . $this->url;
     }
 
     /**
