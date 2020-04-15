@@ -3,6 +3,15 @@ easy_admin:
        # List the entity class name you want to manage
         BlogPost:
             class: App\Entity\BlogPost
+            list:
+                actions: [ { name: 'Show' }]
+            show:
+                fields:
+                    - id
+                    - title
+                    - published
+                    - { property: 'comments', teplate: 'comments.html.twig' }
+                    - images
         Comment:
             class: App\Entity\Comment
         User:

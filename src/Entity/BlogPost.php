@@ -76,7 +76,7 @@ use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
  *     itemOperations={
  *     "get"={
  *     "normalization_context"={
- *              "groups"={"get-blog-post-with-author"}
+ *              "groups"={"get-BlogPost-with-author"}
  *          }
  *     },
  *     "put"={
@@ -101,26 +101,26 @@ class BlogPost implements AuthoredEntityInterface, PublishedDateEntityInterface
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"get-blog-post-with-author"})
+     * @Groups({"get-BlogPost-with-author"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"post", "get-blog-post-with-author"})
+     * @Groups({"post", "get-BlogPost-with-author"})
      * @Assert\NotBlank()
      */
     private $title;
 
     /**
      * @ORM\Column(type="datetime")
-     * @Groups({"get-blog-post-with-author"})
+     * @Groups({"get-BlogPost-with-author"})
      */
     private $published;
 
     /**
      * @ORM\Column(type="text")
-     * @Groups({"post",  "get-blog-post-with-author"})
+     * @Groups({"post",  "get-BlogPost-with-author"})
      * @Assert\NotBlank()
      * @Assert\Length(min="10")
      */
@@ -129,20 +129,20 @@ class BlogPost implements AuthoredEntityInterface, PublishedDateEntityInterface
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="posts")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"get-blog-post-with-author"})
+     * @Groups({"get-BlogPost-with-author"})
      */
     private $author;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"post", "get-blog-post-with-author"})
+     * @Groups({"post", "get-BlogPost-with-author"})
      */
     private $slug;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="blogPost")
      * @ApiSubresource()
-     * @Groups({"get-blog-post-with-author"})
+     * @Groups({"get-BlogPost-with-author"})
      */
     private $comments;
 
@@ -150,7 +150,7 @@ class BlogPost implements AuthoredEntityInterface, PublishedDateEntityInterface
      * @ORM\ManyToMany(targetEntity="App\Entity\Image")
      * @ORM\JoinTable()
      * @ApiSubresource()
-     * @Groups({"post", "get-blog-post-with-author"})
+     * @Groups({"post", "get-BlogPost-with-author"})
      */
     private $images;
 

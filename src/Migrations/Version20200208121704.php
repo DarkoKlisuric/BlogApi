@@ -23,7 +23,7 @@ final class Version20200208121704 extends AbstractMigration
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
         $this->addSql('ALTER TABLE comment ADD blog_post_id INT NOT NULL');
-        $this->addSql('ALTER TABLE comment ADD CONSTRAINT FK_9474526CA77FBEAF FOREIGN KEY (blog_post_id) REFERENCES blog_post (id)');
+        $this->addSql('ALTER TABLE comment ADD CONSTRAINT FK_9474526CA77FBEAF FOREIGN KEY (blog_post_id) REFERENCES BlogPost (id)');
         $this->addSql('CREATE INDEX IDX_9474526CA77FBEAF ON comment (blog_post_id)');
     }
 

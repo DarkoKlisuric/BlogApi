@@ -41,7 +41,7 @@ class Image
 
     /**
      * @ORM\Column(name="url", type="string", nullable=true)
-     * @Groups({"get-blog-post-with-author"})
+     * @Groups({"get-BlogPost-with-author"})
      */
     private $url;
 
