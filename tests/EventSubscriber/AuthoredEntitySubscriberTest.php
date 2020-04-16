@@ -45,9 +45,9 @@ class AuthoredEntitySubscriberTest extends TestCase
     {
         $entityMock = $this->getEntityMock($className, $shouldCallSetAtuhor);
 
-        $tokenStorageMock = $this->getTokenStorageMock();
-
         $eventMock = $this->getEventMock($method, $entityMock);
+
+        $tokenStorageMock = $this->getTokenStorageMock();
 
         (new AuthoredEntitySubscriber($tokenStorageMock))->getAuthenticatedUser($eventMock);
     }
@@ -56,20 +56,30 @@ class AuthoredEntitySubscriberTest extends TestCase
     {
         return [
             [BlogPost::class, true, 'POST'],
-            [Comment::class, false, 'GET'],
+            [BlogPost::class, false, 'GET'],
             ['NonExisting', false, 'POST'],
         ];
     }
 
+    public function testNoTokenPresent()
+    {
+        $eventMock = $this->getEventMock('POST', new class {});
+
+        $tokenStorageMock = $this->getTokenStorageMock(false);
+
+        (new AuthoredEntitySubscriber($tokenStorageMock))->getAuthenticatedUser($eventMock);
+    }
+
     /**
+     * @param bool $hasToken
      * @return MockObject|TokenStorageInterface
      */
-    private function getTokenStorageMock(): MockObject
+    private function getTokenStorageMock(bool $hasToken = true): MockObject
     {
         $tokenMock = $this->getMockBuilder(TokenInterface::class)
             ->getMockForAbstractClass();
 
-        $tokenMock->expects($this->once())
+        $tokenMock->expects($hasToken ? $this->once() : $this->never())
             ->method('getUser')
             ->willReturn(new User());
 
@@ -78,7 +88,7 @@ class AuthoredEntitySubscriberTest extends TestCase
 
         $tokenStorageMock->expects($this->once())
             ->method('getToken')
-            ->willReturn($tokenMock);
+            ->willReturn($hasToken ? $tokenMock : null);
 
         return $tokenStorageMock;
     }
