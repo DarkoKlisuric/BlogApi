@@ -29,15 +29,27 @@ class AuthoredEntitySubscriberTest extends TestCase
         );
     }
 
+    /**
+     *  Removing "Final" from ViewEvent class to pass the test
+     *  Lower version than symfony 5 have class GetResponseForControllerResultEvent
+     *  instead of ViewEvent. That class was not the final.
+     */
     public function testSetAuthorCall()
     {
+        $entityMock = $this->getEntityMock(BlogPost::class, true);
+
         $tokenStorageMock = $this->getTokenStorageMock();
 
-        $eventMock = $this->getEventMock();
+        $eventMock = $this->getEventMock('POST', $entityMock);
 
-        // Removing "Final" from ViewEvent class to past the test
-        // Lower version than symfony 5 have class GetResponseForControllerResultEvent
-        // instead of ViewEvent. That class was not the final.
+        (new AuthoredEntitySubscriber($tokenStorageMock))->getAuthenticatedUser($eventMock);
+
+        $entityMock = $this->getEntityMock('NonExisting', false);
+
+        $tokenStorageMock = $this->getTokenStorageMock();
+
+        $eventMock = $this->getEventMock('GET', $entityMock);
+
         (new AuthoredEntitySubscriber($tokenStorageMock))->getAuthenticatedUser($eventMock);
     }
 
@@ -64,15 +76,18 @@ class AuthoredEntitySubscriberTest extends TestCase
     }
 
     /**
+     * @param string $method
+     * @param $controllerResult
      * @return MockObject|ViewEvent
      */
-    private function getEventMock(): MockObject
+    private function getEventMock(string $method, $controllerResult): MockObject
     {
         $requestMock = $this->getMockBuilder(Request::class)
             ->getMock();
+
         $requestMock->expects($this->once())
             ->method('getMethod')
-            ->willReturn('POST');
+            ->willReturn($method);
 
         $eventMock = $this->getMockBuilder(ViewEvent::class)
             ->disableOriginalConstructor()
@@ -80,11 +95,27 @@ class AuthoredEntitySubscriberTest extends TestCase
 
         $eventMock->expects($this->once())
             ->method('getControllerResult')
-            ->willReturn(new BlogPost());
+            ->willReturn($controllerResult);
+
         $eventMock->expects($this->once())
             ->method('getRequest')
             ->willReturn($requestMock);
 
         return $eventMock;
+    }
+
+    /**
+     * @param string $className
+     * @param bool $shouldCallSetAtuhor
+     * @return MockObject
+     */
+    private function getEntityMock(string $className, bool $shouldCallSetAtuhor): MockObject
+    {
+        $entityMock = $this->getMockBuilder($className)
+            ->setMethods(['setAuthor'])
+            ->getMock();
+        $entityMock->expects($shouldCallSetAtuhor ? $this->once() : $this->never())
+            ->method('setAuthor');
+        return $entityMock;
     }
 }
