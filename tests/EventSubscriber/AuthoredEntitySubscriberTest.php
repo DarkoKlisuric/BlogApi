@@ -4,7 +4,6 @@ namespace App\Tests\EventSubscriber;
 
 use ApiPlatform\Core\EventListener\EventPriorities;
 use App\Entity\BlogPost;
-use App\Entity\Comment;
 use App\Entity\User;
 use App\EventSubscriber\AuthoredEntitySubscriber;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -15,9 +14,12 @@ use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
+/**
+ * Class AuthoredEntitySubscriberTest
+ * @package App\Tests\EventSubscriber
+ */
 class AuthoredEntitySubscriberTest extends TestCase
 {
-
     public function testConfiguration()
     {
         $result = AuthoredEntitySubscriber::getSubscribedEvents();
@@ -52,6 +54,10 @@ class AuthoredEntitySubscriberTest extends TestCase
         (new AuthoredEntitySubscriber($tokenStorageMock))->getAuthenticatedUser($eventMock);
     }
 
+
+    /**
+     * @return array|array[]
+     */
     public function providerSetAuthorCall(): array
     {
         return [
@@ -60,6 +66,7 @@ class AuthoredEntitySubscriberTest extends TestCase
             ['NonExisting', false, 'POST'],
         ];
     }
+
 
     public function testNoTokenPresent()
     {
