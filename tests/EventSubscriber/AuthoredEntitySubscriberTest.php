@@ -4,6 +4,7 @@ namespace App\Tests\EventSubscriber;
 
 use ApiPlatform\Core\EventListener\EventPriorities;
 use App\Entity\BlogPost;
+use App\Entity\Comment;
 use App\Entity\User;
 use App\EventSubscriber\AuthoredEntitySubscriber;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -30,27 +31,34 @@ class AuthoredEntitySubscriberTest extends TestCase
     }
 
     /**
-     *  Removing "Final" from ViewEvent class to pass the test
-     *  Lower version than symfony 5 have class GetResponseForControllerResultEvent
-     *  instead of ViewEvent. That class was not the final.
+     * @param string $className
+     * @param bool $shouldCallSetAtuhor
+     * @param string $method
+     *
+     * Removing "Final" from ViewEvent class to pass the test
+     * Lower version than symfony 5 have class GetResponseForControllerResultEvent
+     * instead of ViewEvent. That class was not the final.
+     *
+     * @dataProvider providerSetAuthorCall
      */
-    public function testSetAuthorCall()
+    public function testSetAuthorCall(string $className, bool $shouldCallSetAtuhor, string  $method)
     {
-        $entityMock = $this->getEntityMock(BlogPost::class, true);
+        $entityMock = $this->getEntityMock($className, $shouldCallSetAtuhor);
 
         $tokenStorageMock = $this->getTokenStorageMock();
 
-        $eventMock = $this->getEventMock('POST', $entityMock);
+        $eventMock = $this->getEventMock($method, $entityMock);
 
         (new AuthoredEntitySubscriber($tokenStorageMock))->getAuthenticatedUser($eventMock);
+    }
 
-        $entityMock = $this->getEntityMock('NonExisting', false);
-
-        $tokenStorageMock = $this->getTokenStorageMock();
-
-        $eventMock = $this->getEventMock('GET', $entityMock);
-
-        (new AuthoredEntitySubscriber($tokenStorageMock))->getAuthenticatedUser($eventMock);
+    public function providerSetAuthorCall(): array
+    {
+        return [
+            [BlogPost::class, true, 'POST'],
+            [Comment::class, false, 'GET'],
+            ['NonExisting', false, 'POST'],
+        ];
     }
 
     /**
